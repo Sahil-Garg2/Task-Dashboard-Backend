@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
 
   try {
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).populate('role');
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ id: user._id }, "secret", {
       expiresIn: '1d',
     });
-    res.status(200).json({ token });
+    res.status(200).json({ token, user });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
