@@ -33,7 +33,7 @@ router.post('/create', protect,isAdmin, async (req, res) => {
 });
 
 // Fetch all tasks
-router.get('/', protect, isAdmin, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const roles = await Role.find();
         res.status(200).json(roles);
