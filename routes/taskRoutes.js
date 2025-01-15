@@ -13,6 +13,16 @@ router.get("/", async (req, res) => {
       .populate('category')
       .populate({ path: "checklist.id", model: "Checklist" })
       .populate("dependency").populate("status");
+    console.log(tasks);
+
+    const tasks1 = await Task.find()
+      .populate('assignedUser')
+      .populate("assignedRole")
+      .populate('category')
+      .populate({ path: "checklist.id", model: "Checklist" })
+      .populate("dependency");
+    
+    console.log(tasks1);
     res.status(200).json(tasks);
   } catch (error) {
     console.log(error);
@@ -35,6 +45,7 @@ router.post('/create', async (req, res) => {
     })),
     dependency: category.dependency,
     currentDependencyNo: 0,
+    status: category.dependency && category.dependency.length > 0 ? category.dependency[0]._id : null
   });
   try {
     await newTask.save();
